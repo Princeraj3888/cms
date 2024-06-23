@@ -1,2 +1,73 @@
-package com.lomatech.security.cms.security.user;public class SecurityUser {
+package com.lomatech.security.cms.security.user;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class SecurityUser implements UserDetails {
+
+    private String userName;
+    private String password;
+    private List<GrantedAuthority> grantedAuthorityList;
+    private boolean accessToRestrictedPolicy;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.grantedAuthorityList;
+    }
+
+    public SecurityUser withGrantedAuthorityList(List<GrantedAuthority> grantedAuthorityList){
+        this.grantedAuthorityList = grantedAuthorityList;
+        return this;
+    }
+    public static SecurityUser builder(){
+        return new SecurityUser();
+    }
+
+    public SecurityUser withPassword(String password){
+        this.password = password;
+        return this;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    public SecurityUser withUserName(String userName){
+        this.userName = userName;
+        return this;
+    }
+    @Override
+    public String getUsername() {
+        return this.userName;
+    }
+
+    public SecurityUser hasRestrictedPolicy(boolean hasRestrictedPolicy){
+        this.accessToRestrictedPolicy = hasRestrictedPolicy;
+        return this;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }
